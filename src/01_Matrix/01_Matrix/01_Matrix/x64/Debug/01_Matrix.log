@@ -1,0 +1,18 @@
+﻿  Main.cpp
+c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\main.cpp(11): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\tmatrix.h(457): warning C4244: =: преобразование "double" в "ValType", возможна потеря данных
+          with
+          [
+              ValType=int
+          ]
+  c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\tmatrix.h(448): note: при компиляции функции-члена "<Нет данных>" класса класс <Нет данных>
+  c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\main.cpp(229): note: выполняется компиляция ссылки на экземпляр шаблон функции "TVector<int> TMatrix<int>::operator *(const TVector<int> &)"
+  c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\main.cpp(13): note: выполняется компиляция ссылки на экземпляр шаблон класс "TMatrix<int>"
+c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\tmatrix.h(405): warning C4244: =: преобразование "double" в "ValType", возможна потеря данных
+          with
+          [
+              ValType=int
+          ]
+  c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\tmatrix.h(396): note: при компиляции функции-члена "<Нет данных>" класса класс <Нет данных>
+  c:\users\temp110\desktop\practice1\mp2-practice\src\01_matrix\01_matrix\main.cpp(203): note: выполняется компиляция ссылки на экземпляр шаблон функции "TMatrix<int> TMatrix<int>::operator *(const TMatrix<int> &)"
+  01_Matrix.vcxproj -> C:\Users\temp110\Desktop\Practice1\mp2-practice\src\01_Matrix\x64\Debug\01_Matrix.exe
