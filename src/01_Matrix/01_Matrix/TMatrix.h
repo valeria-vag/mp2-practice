@@ -1,4 +1,4 @@
-#ifndef _TMatrix_h
+п»ї#ifndef _TMatrix_h
 #define _TMatrix_h
 
 #include <iostream>
@@ -8,7 +8,6 @@
 
 using namespace std;
 
-//Исключения
 class Exception : exception
 {
 private:
@@ -60,7 +59,7 @@ public:
 	template<typename ValType> friend istream& operator>>(istream&, TVector<ValType>&);
 	template<typename ValType> friend ostream& operator<<(ostream&, const TVector<ValType>&);
 };
-//конструктор
+
 template<class ValType>
 TVector<ValType>::TVector(int _size, int _StartIdx)
 {
@@ -83,7 +82,6 @@ TVector<ValType>::TVector(int _size, int _StartIdx)
 	}
 };
 
-//конструктор копирования
 template<class ValType>
 TVector<ValType>::TVector(const TVector& _copy)
 {
@@ -100,7 +98,6 @@ TVector<ValType>::TVector(const TVector& _copy)
 	}
 };
 
-//деструктор
 template<class ValType>
 TVector<ValType>::~TVector()
 {
@@ -111,7 +108,6 @@ TVector<ValType>::~TVector()
 	elem = NULL;
 };
 
-//перегрузки
 template<class ValType>
 TVector<ValType> TVector<ValType>::operator+(const TVector& _add)
 {
@@ -493,7 +489,7 @@ ostream& operator<<(ostream& _out, const TMatrix<ValType>& _matrix)
 {
 	for (int i = 0; i < _matrix.size; i++)
 	{
-		for (int j = 0; j < i; j++)  // for indentations (tab)
+		for (int j = 0; j < i; j++)
 			_out << "\t";
 
 		_out << _matrix.elem[i] << endl;
