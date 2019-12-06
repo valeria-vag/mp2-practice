@@ -274,7 +274,7 @@ int TVector<ValType>::GetStartIdx() const
 };
 
 
-/*template<class ValType>
+template<class ValType>
 istream& operator>>(istream& _in, TVector<ValType>& _vector)
 {
 	for (int i = 0; i < _vector.size; i++)
@@ -284,31 +284,18 @@ istream& operator>>(istream& _in, TVector<ValType>& _vector)
 };
 
 template<class ValType>
-ostream& operator<<(ostream& _out, const TVector<ValType>& _vector)
-{
-	for (int i = 0; i < _vector.size; i++)
-		_out << _vector.elem[i] << "\t";
-
-	return _out;
-};*/
-
  ostream& operator<<(ostream& os, const TVector<ValType>& tmp)
     {
         cout << "\n  ";
-        for (int i = 0; i < tmp.GetStartIndex(); i++)
-            os << "  ";
+        for (int i = 0; i < tmp.GetStartIdx(); i++)
+            os << "\t";
         for (int i = 0; i < tmp.size; i++)
         {
-            os << tmp.elem[i] << " ";
+            os << tmp.elem[i] << "\t";
         }
         return os;
     };
-    friend istream& operator >> (istream& is, TVector& tmp)
-    {
-        for (int i = 0; i < tmp.size; i++)
-            is >> tmp.elem[i];
-        return is;
-    };
+
 
 ////////////////////////////////////////////////////////////////////
 //MATRIX
@@ -339,6 +326,7 @@ public:
 	bool operator!=(const TMatrix&) const;
 
 	template<typename ValType> friend istream& operator>>(istream&, TMatrix<ValType>&);
+
 	template<typename ValType> friend ostream& operator<<(ostream&, const TMatrix<ValType>&);
 };
 
@@ -501,16 +489,9 @@ istream& operator>>(istream& _in, TMatrix<ValType>& _matrix)
 	return _in;
 };
 
-template<typename ValType> 
-ostream& operator<<(ostream& _out, const TMatrix<ValType>& _matrix)
-{
-	for (int i = 0; i < _matrix.size; i++)
-		_out << _matrix.elem[i] << endl;
 
-	return _out;
-};
-
-/*   friend ostream& operator<<(ostream& os, TMatrix& tmp)
+template<typename ValType>
+ostream& operator<<(ostream& os, const TMatrix<ValType>& tmp)
     {
         for (int i = 0; i < tmp.GetSize(); i++)
         {
@@ -518,12 +499,6 @@ ostream& operator<<(ostream& _out, const TMatrix<ValType>& _matrix)
         }
         return os;
     };
-    friend istream& operator >> (istream& is, TMatrix& tmp)
-    {
-        for (int i = 0; i < tmp.size; i++)
-            is >> tmp.elem[i];
-        return is;
-    };
-*/
+
 
 #endif
