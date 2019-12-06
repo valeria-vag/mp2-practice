@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{B1759F72-B63A-4E22-9E03-C8C6A05AE334}</ProjectGuid>
+    <ProjectGuid>{BC52C307-1BDC-4C31-AA04-2E7615B7A94E}</ProjectGuid>
     <RootNamespace>My01Matrix</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -115,8 +115,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="TMatrix.h" />
-    <ClInclude Include="TVector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

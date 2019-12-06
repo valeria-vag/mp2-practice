@@ -1,6 +1,8 @@
 #ifndef _TSTACK_H_ 
 #define _TSTACK_H_
+
 #include "exceptions.h"
+
 using namespace std;
 
 template<typename ValType>
@@ -16,7 +18,7 @@ public:
 
 	void Push(ValType);
 	void Pop();
-	ValType GetPop();
+	ValType Top() const;
 
 	bool IsEmpty()const;
 	bool IsFull()const;
@@ -63,7 +65,7 @@ void TStack<ValType>::Push(ValType new_elem) {
 }
 
 template<typename ValType>
-ValType TStack<ValType>::GetPop() {
+ValType TStack<ValType>::Top() const {
 	if (IsEmpty()) {
 		throw Exception("Stack is empty\n");
 	}

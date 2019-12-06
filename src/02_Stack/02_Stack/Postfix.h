@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
+
 #include "tstack.h"
 #include "exceptions.h"
+
 using namespace std;
 
 class TPostfix {
@@ -10,7 +12,11 @@ private:
 	static bool Comparison(char, TStack<char>&);
 	static bool IsItOperation(const char);
 public:
-	static string PostfixForm(string);
+	static string PostfixForm(const string&);
+	static void GetOperands(const string& postfix, char*& operands, double*& values, int& count);
+	static double Calculate(const string& postfix, char* operands, double* values, int count);
+
+
 	static int GettingCount(string);
 	static double Calculate(double*, string&, string);
 	static void GettingValues(double*, string&, string, int);
@@ -27,7 +33,7 @@ int TPostfix::Priority(const char sign) {
 	}
 }
 bool TPostfix::Comparison(char exp, TStack<char>& pop_elem) {
-	return (Priority(pop_elem.GetPop()) < Priority(exp));
+	return (Priority(pop_elem.Top()) < Priority(exp));
 
 };
 
@@ -90,7 +96,7 @@ string TPostfix::PostfixForm(string exp) {
 			}
 			if (Comparison(sign, stack1)) {
 				while (!stack1.IsEmpty()) {
-					stack2.Push(stack1.GetPop());
+					stack2.Push(stack1.Top());
 					stack1.Pop();
 				}
 				stack1.Push(sign);
@@ -108,9 +114,9 @@ string TPostfix::PostfixForm(string exp) {
 		if (sign == ')') {
 			int left_bracket_flag = 0;
 			while (!stack1.IsEmpty()) {
-				if (stack1.GetPop() != '(') {
-					cout << stack1.GetPop() << endl;
-					stack2.Push(stack1.GetPop());
+				if (stack1.Top() != '(') {
+					cout << stack1.Top() << endl;
+					stack2.Push(stack1.Top());
 					stack1.Pop();
 					continue;
 				}
@@ -125,13 +131,13 @@ string TPostfix::PostfixForm(string exp) {
 
 	}
 	while (!stack1.IsEmpty()) {
-		stack2.Push(stack1.GetPop());
+		stack2.Push(stack1.Top());
 		stack1.Pop();
 	}
 	string postfix_form;
 
 	while (!stack2.IsEmpty()) {
-		postfix_form += stack2.GetPop();
+		postfix_form += stack2.Top();
 		stack2.Pop();
 	}
 
@@ -156,9 +162,9 @@ double TPostfix::Calculate(double* values, string& operands, string p_f)
 			continue;
 		}
 
-		double first = resulting_mas.GetPop();
+		double first = resulting_mas.Top();
 		resulting_mas.Pop();
-		double second = resulting_mas.GetPop();
+		double second = resulting_mas.Top();
 		resulting_mas.Pop();
 		double result;
 
@@ -181,5 +187,5 @@ double TPostfix::Calculate(double* values, string& operands, string p_f)
 
 		resulting_mas.Push(result);
 	}
-	return resulting_mas.GetPop();
+	return resulting_mas.Top();
 };
