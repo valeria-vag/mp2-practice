@@ -46,25 +46,25 @@ int TPostfix::GettingCount(string postfix_form) {
 }
 
 void TPostfix::GettingValues(double* values, string& operands, string p_f, int count) {
-	int current_count_of_operands = 0;
+	int curr = 0;
 	double value = 0;
 	char* new_operands = new char[count];
 	double* new_values = new double[count];
 	for (int i = 0; i < p_f.length(); i++) {
 		if (isalpha(p_f[i])) {
 			int flag = 0;
-			for (int j = 0; j < current_count_of_operands; j++) {
+			for (int j = 0; j < curr; j++) {
 				if (new_operands[j] == p_f[i]) {
 					flag = 1;
 					break;
 				}
 			}
 			if (flag == 0) {
-				new_operands[current_count_of_operands] = p_f[i];
+				new_operands[curr] = p_f[i];
 				cout << "Value of operand " << p_f[i] << endl;
 				cin >> value;
-				new_values[current_count_of_operands] = value;
-				current_count_of_operands++;
+				new_values[curr] = value;
+				curr++;
 			}
 		}
 	}
