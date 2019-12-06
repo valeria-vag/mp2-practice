@@ -26,9 +26,9 @@ public:
 template<typename ValType>
 TStack<ValType>::TStack(int _size) {
 
-	if (_size <= 0) 
+	if (_size <= 0)
 		throw Exception("Size is not correct\n");
-	
+
 	size = _size;
 	elem = new ValType[size];
 	top = 0;

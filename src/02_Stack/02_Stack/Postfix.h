@@ -174,7 +174,7 @@ double TPostfix::Calculate(double* values, string& operands, string p_f)
 			break;
 		case '/':
 			if (first == 0)
-				throw Exception("На 0 делить нельзя:(\n");
+				throw Exception("Cannot divide by zero :(\n");
 			result = second / first;
 			break;
 		}
