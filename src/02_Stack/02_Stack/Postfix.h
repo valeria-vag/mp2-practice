@@ -12,9 +12,9 @@ private:
 	static bool Comparison(char, TStack<char>&);
 	static bool IsItOperation(const char);
 public:
-	static string PostfixForm(string);
-	static double Calculate(double*, char*, string, int);
-	static void GettingOperands(string, char*&, double*&, int&);
+	static string PostfixForm(const string&); 
+	static double Calculate(double* values, char* operands, string p_f, int count);//(const string& p_f, char* operands, double* values, int count) || (double* values, char* operands, string p_f, int count)
+	static void GetOperands(double*& values, char*& operands, string p_f, int& count);//(const string& p_f, char*& operands, double*& values, int& count) || (string p_f, char*& operands, double*& values, int& count)
 };
 
 int TPostfix::Priority(const char sign) {
@@ -35,7 +35,7 @@ bool TPostfix::IsItOperation(const char oper) {
 	return ((oper == '*') || (oper == '/') || (oper == '+') || (oper == '-'));
 }
 
-void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int& count) {
+void TPostfix::GetOperands(double*& values, char*& operands, string p_f, int& count) {
 	int curr = 0;
 	double value = 0;
 	char* new_operands = new char[count];
@@ -60,48 +60,11 @@ void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int
 		}
 	}
 	count = curr;
-	memcpy(values, new_values, sizeof(double) * count);//скопировали 2ое в 1ое
-	memcpy(operands, new_operands, sizeof(char) * count);//скопировали 2ое в 1ое
-}
-
-/*int TPostfix::GettingCount(string postfix_form) {
-	int count = 0;
-	for (int i = 0; i < postfix_form.length(); i++) {
-		if (isalpha(postfix_form[i])) {
-			count++;
-		}
-	}
-	return count;
-}
-
-void TPostfix::GettingValues(double* values, string& operands, string p_f, int count) {
-	int current_count_of_operands = 0;
-	double value = 0;
-	char* new_operands = new char[count];
-	double* new_values = new double[count];
-	for (int i = 0; i < p_f.length(); i++) {
-		if (isalpha(p_f[i])) {
-			int flag = 0;
-			for (int j = 0; j < current_count_of_operands; j++) {
-				if (new_operands[j] == p_f[i]) {
-					flag = 1;
-					break;
-				}
-			}
-			if (flag == 0) {
-				new_operands[current_count_of_operands] = p_f[i];
-				cout << "Value of operand " << p_f[i] << endl;
-				cin >> value;
-				new_values[current_count_of_operands] = value;
-				current_count_of_operands++;
-			}
-		}
-	}
-	operands.assign(new_operands);
 	memcpy(values, new_values, sizeof(double) * count);
-}*/
+	memcpy(operands, new_operands, sizeof(char) * count);
+}
 
-string TPostfix::PostfixForm(string exp) {
+string TPostfix::PostfixForm(const string& exp) {
 	if (exp.length() == 0) {
 		throw Exception("Input is uncorrect\n");
 	}
@@ -172,23 +135,23 @@ string TPostfix::PostfixForm(string exp) {
 
 double TPostfix::Calculate(double* values, char* operands, string p_f, int count)
 {
-	TStack<double> resulting_mas(p_f.length());
+	TStack<double> result_mas(p_f.length());
 	for (int i = 0; i < p_f.length(); i++) {
 		char sign = static_cast<char>(p_f[i]);
 		if (isalpha(sign)) {
 			for (int j = 0; j < count; j++) {
 				if (operands[j] == sign) {
-					resulting_mas.Push(values[j]);
+					result_mas.Push(values[j]);
 					break;
 				}
 			}
 			continue;
 		}
 
-		double first = resulting_mas.Top();
-		resulting_mas.Pop();
-		double second = resulting_mas.Top();
-		resulting_mas.Pop();
+		double first = result_mas.Top();
+		result_mas.Pop();
+		double second = result_mas.Top();
+		result_mas.Pop();
 		double result;
 
 		switch (sign) {
@@ -208,7 +171,7 @@ double TPostfix::Calculate(double* values, char* operands, string p_f, int count
 			break;
 		}
 
-		resulting_mas.Push(result);
+		result_mas.Push(result);
 	}
-	return resulting_mas.Top();
+	return result_mas.Top();
 };
