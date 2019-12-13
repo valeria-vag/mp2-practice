@@ -9,17 +9,17 @@ using namespace std;
 
 void main() {
 	string str;
-	string operands;
+	int count = 0;
 	try {
 		cout << "Enter expression " << endl;
 		getline(cin, str);
 		string p_f = TPostfix::PostfixForm(str);
 		cout << "Postfix form: " << endl;
 		cout << p_f << endl;
-		int count = TPostfix::GettingCount(p_f);
-		double* values = new double[count];
-		TPostfix::GettingValues(values, operands, p_f, count);
-		double result = TPostfix::Calculate(values, operands, p_f);
+		char* operands = new char[p_f.length()];
+		double* values = new double[p_f.length()];
+		TPostfix::GettingOperands(p_f, operands, values, count);
+		double result = TPostfix::Calculate(values, operands, p_f, count);
 		cout << "Result: " << result << endl;
 	}
 	catch (const Exception& ex) {
