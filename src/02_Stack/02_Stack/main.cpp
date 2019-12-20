@@ -18,7 +18,7 @@ void main() {
 		cout << p_f << endl;
 		char* operands = new char[p_f.length()];
 		double* values = new double[p_f.length()];
-		TPostfix::GetOperands(values, operands, p_f,  count);
+		TPostfix::GettingOperands(p_f, operands, values, count);
 		double result = TPostfix::Calculate(values, operands, p_f, count);
 		cout << "Result: " << result << endl;
 	}

@@ -12,9 +12,9 @@ private:
 	static bool Comparison(char, TStack<char>&);
 	static bool IsItOperation(const char);
 public:
-	static string PostfixForm(const string&); 
-	static double Calculate(double* values, char* operands, string p_f, int count);//(const string& p_f, char* operands, double* values, int count) || (double* values, char* operands, string p_f, int count)
-	static void GetOperands(double*& values, char*& operands, string p_f, int& count);//(const string& p_f, char*& operands, double*& values, int& count) || (string p_f, char*& operands, double*& values, int& count)
+	static string PostfixForm(string);
+	static double Calculate(double*, char*, string, int);
+	static void GettingOperands(string, char*&, double*&, int&);
 };
 
 int TPostfix::Priority(const char sign) {
@@ -28,14 +28,13 @@ int TPostfix::Priority(const char sign) {
 }
 bool TPostfix::Comparison(char exp, TStack<char>& pop_elem) {
 	return (Priority(pop_elem.Top()) < Priority(exp));
-
 };
 
 bool TPostfix::IsItOperation(const char oper) {
 	return ((oper == '*') || (oper == '/') || (oper == '+') || (oper == '-'));
 }
 
-void TPostfix::GetOperands(double*& values, char*& operands, string p_f, int& count) {
+void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int& count) {
 	int curr = 0;
 	double value = 0;
 	char* new_operands = new char[count];
@@ -60,71 +59,72 @@ void TPostfix::GetOperands(double*& values, char*& operands, string p_f, int& co
 		}
 	}
 	count = curr;
-	memcpy(values, new_values, sizeof(double) * count);
-	memcpy(operands, new_operands, sizeof(char) * count);
+	memcpy(values, new_values, sizeof(double) * count);//скопировали 2ое в 1ое
+	memcpy(operands, new_operands, sizeof(char) * count);//скопировали 2ое в 1ое
 }
 
-string TPostfix::PostfixForm(const string& exp) {
-	if (exp.length() == 0) {
+
+string TPostfix::PostfixForm(string exp) {
+	if (exp.length() == 0) 
 		throw Exception("Input is uncorrect\n");
-	}
-	TStack<char> stack1(exp.length() + 1);
-	TStack<char> stack2(exp.length() + 1);
+
+	TStack<char>Stack1(exp.length() + 1);
+	TStack<char>Stack2(exp.length() + 1);
+
 	for (int i = 0; i < exp.length(); i++) {
 		char sign = static_cast<char>(exp[i]);
-		if (sign == ' ') {
+		if (sign == ' ')
 			continue;
-		}
 		if (IsItOperation(sign)) {
-			if (stack1.IsEmpty()) {
-				stack1.Push(sign);
+			if (Stack1.IsEmpty()) {
+				Stack1.Push(sign);
 				continue;
 			}
-			if (Comparison(sign, stack1)) {
-				while (!stack1.IsEmpty()) {
-					stack2.Push(stack1.Top());
-					stack1.Pop();
+			if (Comparison(sign, Stack1)) {
+				while (!Stack1.IsEmpty()) {
+					Stack2.Push(Stack1.Top());//верхн эл-т из 1го стека перекладываем во 2й
+					Stack1.Pop();//уменьшаем 1й стек
 				}
-				stack1.Push(sign);
+				Stack1.Push(sign);
 			}
 			else
-				stack1.Push(sign);
+				Stack1.Push(sign);
 		}
 
 		if (sign == '(') {
-			stack1.Push(sign);
+			Stack1.Push(sign);
 		}
 		if (isalpha(sign)) {
-			stack2.Push(sign);
+			Stack2.Push(sign);
 		}
 		if (sign == ')') {
 			int left_bracket_flag = 0;
-			while (!stack1.IsEmpty()) {
-				if (stack1.Top() != '(') {
-					cout << stack1.Top() << endl;
-					stack2.Push(stack1.Top());
-					stack1.Pop();
+			while (!Stack1.IsEmpty()) {
+				if (Stack1.Top() != '(') {
+					cout << Stack1.Top() << endl;
+					Stack2.Push(Stack1.Top());
+					Stack1.Pop();
 					continue;
 				}
-				stack1.Pop();
+				Stack1.Pop();
 				left_bracket_flag = 1;
 				break;
 			}
-			if ((left_bracket_flag != 1) && (stack1.IsEmpty())) {
+			if ((left_bracket_flag != 1) && (Stack1.IsEmpty())) {
 				throw Exception("Need bracket(\n");
 			}
 		}
 
 	}
-	while (!stack1.IsEmpty()) {
-		stack2.Push(stack1.Top());
-		stack1.Pop();
+	while (!Stack1.IsEmpty()) {
+		Stack2.Push(Stack1.Top());
+		Stack1.Pop();
 	}
 	string postfix_form;
 
-	while (!stack2.IsEmpty()) {
-		postfix_form += stack2.Top();
-		stack2.Pop();
+	while (!Stack2.IsEmpty()) {
+		postfix_form += Stack2.Top();
+		Stack2.Pop();
 	}
 
 	for (int i = 0; i < postfix_form.length() / 2; i++)
@@ -135,23 +135,23 @@ string TPostfix::PostfixForm(const string& exp) {
 
 double TPostfix::Calculate(double* values, char* operands, string p_f, int count)
 {
-	TStack<double> result_mas(p_f.length());
+	TStack<double> resulting_mas(p_f.length());
 	for (int i = 0; i < p_f.length(); i++) {
 		char sign = static_cast<char>(p_f[i]);
 		if (isalpha(sign)) {
 			for (int j = 0; j < count; j++) {
 				if (operands[j] == sign) {
-					result_mas.Push(values[j]);
+					resulting_mas.Push(values[j]);
 					break;
 				}
 			}
 			continue;
 		}
 
-		double first = result_mas.Top();
-		result_mas.Pop();
-		double second = result_mas.Top();
-		result_mas.Pop();
+		double first = resulting_mas.Top();
+		resulting_mas.Pop();
+		double second = resulting_mas.Top();
+		resulting_mas.Pop();
 		double result;
 
 		switch (sign) {
@@ -171,7 +171,7 @@ double TPostfix::Calculate(double* values, char* operands, string p_f, int count
 			break;
 		}
 
-		result_mas.Push(result);
+		resulting_mas.Push(result);
 	}
-	return result_mas.Top();
+	return resulting_mas.Top();
 };

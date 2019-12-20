@@ -17,9 +17,9 @@ public:
 	bool IsEmpty()const;
 	bool IsFull()const;
 
-	void Push(ValType); 
-	void Pop(); 
-	ValType Top();
+	void Push(ValType);//положить эл-т на вершину стека 
+	void Pop(); //уменьшить стек
+	ValType Top(); //удалить эл-т из стека и ретерн
 
 
 
