@@ -199,8 +199,8 @@ void main()
 
 	try
 	{
-		cout << " A * B:" << endl;
-		cout << A * B << endl << endl;
+		cout << " A * C:" << endl;
+		cout << A * C << endl << endl;
 		cout << " B * C:" << endl;
 		cout << B * C << endl << endl;
 	}

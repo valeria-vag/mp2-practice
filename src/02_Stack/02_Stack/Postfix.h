@@ -111,7 +111,7 @@ string TPostfix::PostfixForm(string exp) {
 				break;
 			}
 			if ((left_bracket_flag != 1) && (Stack1.IsEmpty())) {
-				throw Exception("Need bracket(\n");
+				throw Exception("Need bracket '(' \n");
 			}
 		}
 
@@ -135,23 +135,23 @@ string TPostfix::PostfixForm(string exp) {
 
 double TPostfix::Calculate(double* values, char* operands, string p_f, int count)
 {
-	TStack<double> resulting_mas(p_f.length());
+	TStack<double> res(p_f.length());
 	for (int i = 0; i < p_f.length(); i++) {
 		char sign = static_cast<char>(p_f[i]);
 		if (isalpha(sign)) {
 			for (int j = 0; j < count; j++) {
 				if (operands[j] == sign) {
-					resulting_mas.Push(values[j]);
+					res.Push(values[j]);
 					break;
 				}
 			}
 			continue;
 		}
 
-		double first = resulting_mas.Top();
-		resulting_mas.Pop();
-		double second = resulting_mas.Top();
-		resulting_mas.Pop();
+		double first = res.Top();
+		res.Pop();
+		double second = res.Top();
+		res.Pop();
 		double result;
 
 		switch (sign) {
@@ -171,7 +171,7 @@ double TPostfix::Calculate(double* values, char* operands, string p_f, int count
 			break;
 		}
 
-		resulting_mas.Push(result);
+		res.Push(result);
 	}
-	return resulting_mas.Top();
+	return res.Top();
 };
