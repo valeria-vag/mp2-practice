@@ -9,36 +9,36 @@ using namespace std;
 class TPostfix {
 private:
 	static int Priority(const char);
-	static bool Comparison(char, TStack<char>&);
 	static bool IsItOperation(const char);
 public:
-	static string PostfixForm(string);
+	static string PostfixForm(string);//образование постф формы
 	static double Calculate(double*, char*, string, int);
 	static void GettingOperands(string, char*&, double*&, int&);
 };
 
 int TPostfix::Priority(const char sign) {
 	switch (sign) {
+	case '(': return 1;
+	case ')': return 1;
 	case '+': return 2;
 	case '-': return 2;
-	case '*': return 1;
-	case '/': return 1;
-	default: return 3;
+	case '*': return 3;
+	case '/': return 3;
+    default: 
+		throw Exception("Entered symbol is uncorrect\n");
 	}
 }
-bool TPostfix::Comparison(char exp, TStack<char>& pop_elem) {
-	return (Priority(pop_elem.Top()) < Priority(exp));
-};
+
 
 bool TPostfix::IsItOperation(const char oper) {
-	return ((oper == '*') || (oper == '/') || (oper == '+') || (oper == '-'));
+	return ((oper == '+') || (oper == '-') || (oper == '*') || (oper == '/') || (oper == ')') || (oper == '('));;
 }
 
 void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int& count) {
 	int curr = 0;
 	double value = 0;
-	char* new_operands = new char[count];
-	double* new_values = new double[count];
+	char* new_operands = new char[p_f.length()];
+	double* new_values = new double[p_f.length()];
 	for (int i = 0; i < p_f.length(); i++) {
 		if (isalpha(p_f[i])) {
 			count++;
@@ -59,14 +59,17 @@ void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int
 		}
 	}
 	count = curr;
-	memcpy(values, new_values, sizeof(double) * count);//скопировали 2ое в 1ое
-	memcpy(operands, new_operands, sizeof(char) * count);//скопировали 2ое в 1ое
+	memcpy(values, new_values, sizeof(double) * count);
+	memcpy(operands, new_operands, sizeof(char) * count);
 }
 
 
 string TPostfix::PostfixForm(string exp) {
 	if (exp.length() == 0) 
 		throw Exception("Input is uncorrect\n");
+
+	int countLeftBrack = 0;
+	int countOfRightBrack = 0;
 
 	TStack<char>Stack1(exp.length() + 1);
 	TStack<char>Stack2(exp.length() + 1);
@@ -75,20 +78,12 @@ string TPostfix::PostfixForm(string exp) {
 		char sign = static_cast<char>(exp[i]);
 		if (sign == ' ')
 			continue;
-		if (IsItOperation(sign)) {
+		if (IsItOperation(sign)) { //from this place
 			if (Stack1.IsEmpty()) {
 				Stack1.Push(sign);
 				continue;
 			}
-			if (Comparison(sign, Stack1)) {
-				while (!Stack1.IsEmpty()) {
-					Stack2.Push(Stack1.Top());//верхн эл-т из 1го стека перекладываем во 2й
-					Stack1.Pop();//уменьшаем 1й стек
-				}
-				Stack1.Push(sign);
-			}
-			else
-				Stack1.Push(sign);
+			
 		}
 
 		if (sign == '(') {
@@ -111,7 +106,7 @@ string TPostfix::PostfixForm(string exp) {
 				break;
 			}
 			if ((left_bracket_flag != 1) && (Stack1.IsEmpty())) {
-				throw Exception("Need bracket '(' \n");
+				throw Exception("Need a bracket '(' \n");
 			}
 		}
 
@@ -175,3 +170,4 @@ double TPostfix::Calculate(double* values, char* operands, string p_f, int count
 	}
 	return res.Top();
 };
+
