@@ -31,7 +31,7 @@ int TPostfix::Priority(const char sign) {
 
 
 bool TPostfix::IsItOperation(const char oper) {
-	return ((oper == '+') || (oper == '-') || (oper == '*') || (oper == '/') || (oper == ')') || (oper == '('));;
+	return ((oper == '+') || (oper == '-') || (oper == '*') || (oper == '/') || (oper == ')') || (oper == '('));
 }
 
 void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int& count) {
@@ -63,13 +63,12 @@ void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int
 	memcpy(operands, new_operands, sizeof(char) * count);
 }
 
-
 string TPostfix::PostfixForm(string exp) {
 	if (exp.length() == 0) 
 		throw Exception("Input is uncorrect\n");
 
-	int countLeftBrack = 0;
-	int countOfRightBrack = 0;
+	int countLBrack = 0;
+	int countRBrack = 0;
 
 	TStack<char>Stack1(exp.length() + 1);
 	TStack<char>Stack2(exp.length() + 1);
@@ -78,39 +77,49 @@ string TPostfix::PostfixForm(string exp) {
 		char sign = static_cast<char>(exp[i]);
 		if (sign == ' ')
 			continue;
-		if (IsItOperation(sign)) { //from this place
-			if (Stack1.IsEmpty()) {
+		if (IsItOperation(sign)) { 
+			if (sign == '(') {
+				Stack1.Push(sign);
+				countLBrack++;
+				continue;
+			}
+			if (sign == ')') {
+				countRBrack++;
+				while (!Stack1.IsEmpty() ) { 
+					if (Stack1.Top() != '(') {
+						Stack2.Push(Stack1.Top());
+						Stack1.Pop();
+						continue;
+					}
+					Stack1.Pop();
+					break;
+				}
+				continue;
+			}
+			if ((Stack1.IsEmpty()) || (Priority(sign) > Priority(Stack1.Top()))) {
 				Stack1.Push(sign);
 				continue;
 			}
-			
-		}
-
-		if (sign == '(') {
+			while ((!Stack1.IsEmpty()) && (Priority(sign) <= Priority(Stack1.Top()))) {
+				Stack2.Push(Stack1.Top());
+				Stack1.Pop();
+			}
 			Stack1.Push(sign);
+			continue;
 		}
 		if (isalpha(sign)) {
 			Stack2.Push(sign);
+			continue;
 		}
-		if (sign == ')') {
-			int left_bracket_flag = 0;
-			while (!Stack1.IsEmpty()) {
-				if (Stack1.Top() != '(') {
-					cout << Stack1.Top() << endl;
-					Stack2.Push(Stack1.Top());
-					Stack1.Pop();
-					continue;
-				}
-				Stack1.Pop();
-				left_bracket_flag = 1;
-				break;
-			}
-			if ((left_bracket_flag != 1) && (Stack1.IsEmpty())) {
-				throw Exception("Need a bracket '(' \n");
-			}
-		}
-
+		throw Exception("Symbols are uncorrect");
 	}
+	if (countLBrack != countRBrack) {
+		if (countLBrack < countRBrack)
+			throw Exception("Left bracket is lost");
+		else
+			throw Exception("Right bracket is lost");
+	}
+
 	while (!Stack1.IsEmpty()) {
 		Stack2.Push(Stack1.Top());
 		Stack1.Pop();
