@@ -19,7 +19,7 @@ public:
 
 	void Push(ValType);//положить эл-т на вершину стека 
 	void Pop(); //уменьшить стек
-	ValType Top(); //удалить эл-т из стека и вернуть
+	ValType Top(); //взять верхний элемент из стека
 
 
 
@@ -56,23 +56,6 @@ TStack<ValType>::~TStack() {
 }
 
 template<typename ValType>
-void TStack<ValType>::Push(ValType new_elem) {
-	if (IsFull()) {
-		throw Exception("Stack is full\n");
-	}
-	elem[top] = new_elem;
-	top++;
-}
-
-template<typename ValType>
-ValType TStack<ValType>::Top() {
-	if (IsEmpty()) {
-		throw Exception("Stack is empty\n");
-	}
-	return elem[top - 1];
-}
-
-template<typename ValType>
 bool TStack<ValType>::IsEmpty()const {
 	return (top == 0);
 }
@@ -83,11 +66,28 @@ bool TStack<ValType>::IsFull()const {
 }
 
 template<typename ValType>
+void TStack<ValType>::Push(ValType new_elem) {
+	if (IsFull()) {
+		throw Exception("Stack is full\n");
+	}
+	elem[top] = new_elem;
+	top++;
+}
+
+template<typename ValType>
 void TStack<ValType>::Pop() {
 	if (IsEmpty()) {
 		throw Exception("Stack is empty\n");
 	}
 	top--;
+}
+
+template<typename ValType>
+ValType TStack<ValType>::Top() {
+	if (IsEmpty()) {
+		throw Exception("Stack is empty\n");
+	}
+	return elem[top - 1];
 }
 
 #endif
