@@ -114,7 +114,7 @@ string TPostfix::PostfixForm(string exp) {
 		}
 		throw Exception("Symbols are uncorrect");
 	}
-	if (countLBrack != countRBrack) {
+	if (countLBrack != countRBrack) { //корректность ввода скобок
 		if (countLBrack < countRBrack)
 			throw Exception("Left bracket is lost");
 		else
