@@ -19,6 +19,7 @@ void main() {
 		char* operands = new char[p_f.length()];
 		double* values = new double[p_f.length()];
 		TPostfix::GettingOperands(p_f, operands, values, count);
+		cout << "The number of non-repeating operands: " << count << endl;
 		double result = TPostfix::Calculate(values, operands, p_f, count);
 		cout << "Result: " << result << endl;
 	}

@@ -40,7 +40,7 @@ void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int
 	char* new_operands = new char[p_f.length()];
 	double* new_values = new double[p_f.length()];
 	for (int i = 0; i < p_f.length(); i++) {
-		if (isalpha(p_f[i])) {
+		if (isalpha(p_f[i])) { //проверка на символьность
 			count++;
 			int flag = 0;
 			for (int j = 0; j < curr; j++) {
@@ -59,7 +59,8 @@ void TPostfix::GettingOperands(string p_f, char*& operands, double*& values, int
 		}
 	}
 	count = curr;
-	memcpy(values, new_values, sizeof(double) * count);
+
+	memcpy(values, new_values, sizeof(double) * count); //скоп новое в старое
 	memcpy(operands, new_operands, sizeof(char) * count);
 }
 
@@ -70,17 +71,17 @@ string TPostfix::PostfixForm(string exp) {
 	int countLBrack = 0;
 	int countRBrack = 0;
 
-	TStack<char>Stack1(exp.length() + 1);
-	TStack<char>Stack2(exp.length() + 1);
+	TStack<char>Stack1(exp.length() + 1); //операции
+	TStack<char>Stack2(exp.length() + 1); //операнды
 
 	for (int i = 0; i < exp.length(); i++) {
-		char sign = static_cast<char>(exp[i]);
+		char sign = static_cast<char>(exp[i]); //приведение типов
 		if (sign == ' ')
 			continue;
 		if (IsItOperation(sign)) { 
 			if (sign == '(') {
-				Stack1.Push(sign);
 				countLBrack++;
+				Stack1.Push(sign);
 				continue;
 			}
 			if (sign == ')') {
@@ -124,17 +125,17 @@ string TPostfix::PostfixForm(string exp) {
 		Stack2.Push(Stack1.Top());
 		Stack1.Pop();
 	}
-	string postfix_form;
+	string p_f;
 
 	while (!Stack2.IsEmpty()) {
-		postfix_form += Stack2.Top();
+		p_f += Stack2.Top();
 		Stack2.Pop();
 	}
 
-	for (int i = 0; i < postfix_form.length() / 2; i++)
-		swap(postfix_form[i], postfix_form[postfix_form.length() - 1 - i]);
+	for (int i = 0; i < p_f.length() / 2; i++)
+		swap(p_f[i], p_f[p_f.length() - 1 - i]);
 
-	return postfix_form;
+	return p_f;
 }
 
 double TPostfix::Calculate(double* values, char* operands, string p_f, int count)
