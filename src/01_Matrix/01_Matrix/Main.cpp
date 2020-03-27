@@ -145,10 +145,15 @@ void main()
 	for (int i = 0; i < A.GetSize(); i++)
 		for (int j = 0; j < A.GetSize() - i; j++)
 			A[i][j] = rand() % 10 + 1;
+	
+	cout << "Input matrix B" << endl;
+	cin >> B;
 
+	/*
 	for (int i = 0; i < B.GetSize(); i++)
 		for (int j = 0; j < B.GetSize() - i; j++)
 			B[i][j] = rand() % 10 + 1;
+	*/
 
 	for (int i = 0; i < C.GetSize(); i++)
 		for (int j = 0; j < C.GetSize() - i; j++)
@@ -199,8 +204,8 @@ void main()
 
 	try
 	{
-		cout << " A * B:" << endl;
-		cout << A * B << endl << endl;
+		cout << " A * C:" << endl;
+		cout << A * C << endl << endl;
 		cout << " B * C:" << endl;
 		cout << B * C << endl << endl;
 	}

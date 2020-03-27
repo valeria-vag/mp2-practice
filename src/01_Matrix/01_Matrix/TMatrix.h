@@ -284,13 +284,17 @@ istream& operator>>(istream& _in, TVector<ValType>& _vector)
 };
 
 template<class ValType>
-ostream& operator<<(ostream& _out, const TVector<ValType>& _vector)
-{
-	for (int i = 0; i < _vector.size; i++)
-		_out << _vector.elem[i] << "\t";
-
-	return _out;
-};
+ ostream& operator<<(ostream& os, const TVector<ValType>& tmp)
+    {
+        cout << "\n  ";
+        for (int i = 0; i < tmp.GetStartIdx(); i++)
+            os << "\t";
+        for (int i = 0; i < tmp.size; i++)
+        {
+            os << tmp.elem[i] << "\t";
+        }
+        return os;
+    };
 
 
 ////////////////////////////////////////////////////////////////////
@@ -484,18 +488,16 @@ istream& operator>>(istream& _in, TMatrix<ValType>& _matrix)
 	return _in;
 };
 
+
 template<typename ValType>
-ostream& operator<<(ostream& _out, const TMatrix<ValType>& _matrix)
-{
-	for (int i = 0; i < _matrix.size; i++)
-	{
-		for (int j = 0; j < i; j++)
-			_out << "\t";
+ostream& operator<<(ostream& os, const TMatrix<ValType>& tmp)
+    {
+        for (int i = 0; i < tmp.GetSize(); i++)
+        {
+            os << tmp.elem[i];
+        }
+        return os;
+    };
 
-		_out << _matrix.elem[i] << endl;
-	}
-
-	return _out;
-};
 
 #endif
